@@ -30,11 +30,16 @@ def reserve_for_passHolder(playwright):
     tried = 0
     # Check if target date is available
     while(page.is_disabled(targetDate)):
+        page.reload()
         tried += 1
         waitingTime = random.randrange(60, 240)
         print("Attempt# ", tried, " will try after ", waitingTime, " sec")
         time.sleep(waitingTime)
         page.click("button[id=\"passHolderReservationsSearchButton\"]")
+        # wait_for_selector can be a better choice but selector having
+        # troubles to wait correctly until calander finish loading
+        # page.wait_for_selector("text=passholder_reservations__calendar__day")
+        time.sleep(3)
 
     page.click(targetDate)
 
